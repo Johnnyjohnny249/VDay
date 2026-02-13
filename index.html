@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sayang Cantik 🔥</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; width:100%; overflow:hidden; font-family:'Lora', serif; text-align:center; background:black; color:white; }
+
+/* HD Background Video */
+#bgVideo { position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-1; }
+
+/* Container */
+.container { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center; width:90%; max-width:900px; }
+
+/* Flashy Heading */
+h1 {
+  font-family:'Playfair Display', serif;
+  font-size:7vw;
+  animation:colorFlash 1s infinite;
+}
+@keyframes colorFlash {
+  0% { color:#ff0000; }
+  25% { color:#ff8c00; }
+  50% { color:#ffff00; }
+  75% { color:#00ff00; }
+  100% { color:#ff69b4; }
+}
+
+/* Buttons */
+button {
+  font-family:'Montserrat', sans-serif;
+  font-size:2.5vw;
+  padding:15px 50px;
+  margin:20px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  box-shadow:0 0 20px #fff,0 0 40px #ff69b4;
+  transition: all 0.3s ease, transform 0.3s ease;
+  position:relative;
+}
+button:hover { transform:scale(1.1) }
+
+/* Are You Sure Popup */
+#popup {
+  display:none;
+  position:fixed;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  background: rgba(0,0,0,0.8);
+  padding: 40px 60px;
+  border-radius: 25px;
+  font-family:'Playfair Display', serif;
+  font-size:4vw;
+  color:#ff69b4;
+  box-shadow:0 0 30px #fff,0 0 60px #ff1493 inset;
+  z-index:10;
+}
+</style>
+</head>
+<body>
+
+<!-- Video Background -->
+<video autoplay muted loop playsinline id="bgVideo">
+  <source src="background.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<div class="container">
+  <h1>Sayang cantik R U READYYYYY!!!! 🔥</h1>
+  <button id="yesBtn">I'M READY ❤️</button>
+  <button id="noBtn">NO 😅</button>
+</div>
+
+<!-- Are You Sure Popup -->
+<div id="popup">ARE YOU SURE? 😳</div>
+
+<script>
+// No button prank: show "Are you sure?" popup and disappear
+const noBtn = document.getElementById("noBtn");
+const popup = document.getElementById("popup");
+
+noBtn.addEventListener("click", ()=>{
+  popup.style.display = "block";       // show popup
+  noBtn.style.display = "none";        // hide the No button
+});
+
+// Yes button goes to main page
+document.getElementById("yesBtn").addEventListener("click", ()=>{
+  window.location.href="main.html";
+});
+</script>
+</body>
+</html>
