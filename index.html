@@ -9,15 +9,16 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 html, body { height:100%; width:100%; overflow:hidden; font-family:'Lora', serif; text-align:center; background:black; color:white; }
 
-/* Full-screen background video */
+/* Full-screen HD video background */
 #bgVideo {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit: cover;  /* fills screen without distortion */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
   z-index: -1;
+  background-color: black; /* fallback if video fails */
 }
 
 /* Container for content */
@@ -54,25 +55,24 @@ button {
   position:relative;
 }
 button:hover { transform:scale(1.1); }
-
 </style>
 </head>
 <body>
 
-<!-- Background MP4 -->
-<video autoplay muted loop playsinline id="bgVideo">
+<!-- Background MP4 with fallback image -->
+<video id="bgVideo" autoplay muted loop playsinline webkit-playsinline poster="background.jpg">
   <source src="background.mp4" type="video/mp4">
   Your browser does not support HTML5 video.
 </video>
 
 <div class="container">
   <h1>Sayang cantik R U READYYYYY!!!!</h1>
-  <button id="yesBtn">YES MY BUNTIS & I ARE READY🔥🔥</button>
+  <button id="yesBtn">YES MY BUNTIS & I ARE READY🔥🔥🔥</button>
   <button id="noBtn">NO👎🏻👎🏻🍅🍅</button>
 </div>
 
 <script>
-// No button: 5 predefined playful positions near initial spot
+// No button: moves in 5 nearby positions
 const noBtn = document.getElementById("noBtn");
 const container = document.querySelector(".container");
 
@@ -97,9 +97,9 @@ function moveNoButton(){
   // wiggle animation
   noBtn.style.transition = "transform 0.5s ease";
   noBtn.style.transform = "rotate(0deg)";
-  setTimeout(()=>{ noBtn.style.transform="rotate(15deg) scale(1.2)"; },50);
-  setTimeout(()=>{ noBtn.style.transform="rotate(-15deg) scale(1.2)"; },200);
-  setTimeout(()=>{ noBtn.style.transform="rotate(0deg) scale(1)"; },400);
+  setTimeout(()=>{ noBtn.style.transform = "rotate(15deg) scale(1.2)"; },50);
+  setTimeout(()=>{ noBtn.style.transform = "rotate(-15deg) scale(1.2)"; },200);
+  setTimeout(()=>{ noBtn.style.transform = "rotate(0deg) scale(1)"; },400);
 }
 
 noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNoButton(); });
