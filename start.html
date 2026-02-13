@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sayang cantik ❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Dancing Script', cursive;
+      background: url("collage.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 50px;
+      margin-bottom: 50px;
+      text-shadow: 0 0 15px #fff, 0 0 30px #ff69b4;
+    }
+    button {
+      font-family: 'Pacifico', cursive;
+      font-size: 30px;
+      padding: 15px 30px;
+      margin: 20px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #fff, 0 0 20px #ff69b4;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    button:hover { transform: scale(1.1); }
+  </style>
+</head>
+<body>
+
+<h1>Sayang cantik R U READYYYYY!!!!</h1>
+
+<button id="yesBtn" onclick="goToMain()">YES SAYA DAH TAK SABAR NI WOOHOOO</button>
+<button id="noBtn">NO 👎🏻👎🏻👎🏻</button>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+});
+function goToMain(){ window.location.href = "index.html"; }
+</script>
+
+</body>
+</html>
