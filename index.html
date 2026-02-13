@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sayang Cantik ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; width:100%; overflow:hidden; font-family:'Lora', serif; text-align:center; background:black; color:white; }
+
+/* Full-screen background video */
+#bgVideo {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit: cover;  /* fills screen without distortion */
+  z-index: -1;
+}
+
+/* Container for content */
+.container {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  text-align:center;
+  width:90%;
+  max-width:900px;
+}
+
+/* Flashy heading */
+h1 {
+  font-family:'Playfair Display', serif;
+  font-size:7vw;
+  text-shadow:0 0 20px #fff,0 0 40px #ff69b4;
+  margin-bottom:50px;
+  line-height:1.2;
+}
+
+/* Buttons */
+button {
+  font-family:'Montserrat', sans-serif;
+  font-size:2.5vw;
+  padding:15px 50px;
+  margin:20px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
+  box-shadow:0 0 20px #fff,0 0 40px #ff69b4;
+  transition: all 0.3s ease, transform 0.3s ease;
+  position:relative;
+}
+button:hover { transform:scale(1.1); }
+
+</style>
+</head>
+<body>
+
+<!-- Background MP4 -->
+<video autoplay muted loop playsinline id="bgVideo">
+  <source src="background.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+
+<div class="container">
+  <h1>Sayang cantik R U READYYYYY!!!!</h1>
+  <button id="yesBtn">YES MY BUNTIS & I ARE READY🔥🔥</button>
+  <button id="noBtn">NO👎🏻👎🏻🍅🍅</button>
+</div>
+
+<script>
+// No button: 5 predefined playful positions near initial spot
+const noBtn = document.getElementById("noBtn");
+const container = document.querySelector(".container");
+
+const positions = [
+  {x:-100, y:-50},
+  {x:80, y:-40},
+  {x:-80, y:60},
+  {x:50, y:90},
+  {x:0, y:-100}
+];
+let posIndex=0;
+
+function moveNoButton(){
+  const rect = container.getBoundingClientRect();
+  const pos = positions[posIndex];
+  posIndex = (posIndex + 1) % positions.length;
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = (rect.left + rect.width/2 + pos.x - noBtn.offsetWidth/2) + "px";
+  noBtn.style.top = (rect.top + rect.height/2 + pos.y - noBtn.offsetHeight/2) + "px";
+
+  // wiggle animation
+  noBtn.style.transition = "transform 0.5s ease";
+  noBtn.style.transform = "rotate(0deg)";
+  setTimeout(()=>{ noBtn.style.transform="rotate(15deg) scale(1.2)"; },50);
+  setTimeout(()=>{ noBtn.style.transform="rotate(-15deg) scale(1.2)"; },200);
+  setTimeout(()=>{ noBtn.style.transform="rotate(0deg) scale(1)"; },400);
+}
+
+noBtn.addEventListener("click", (e)=>{ e.preventDefault(); moveNoButton(); });
+
+// Yes button navigates to main page
+document.getElementById("yesBtn").addEventListener("click", ()=>{
+  window.location.href="main.html";
+});
+</script>
+</body>
+</html>
