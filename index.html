@@ -3,45 +3,44 @@
 <head>
   <title>Happy Valentine's Day ❤️</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&family=Pacifico&display=swap" rel="stylesheet">
 
   <style>
+    /* Background */
     body {
       margin: 0;
       font-family: 'Dancing Script', cursive;
       overflow: hidden;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3, #ffb6c1);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      color: white;
+      background: url("collage.jpg") no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
     }
 
-    @keyframes gradientBG {
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }
-
+    /* Overlay for glow */
     .overlay {
       background: rgba(0,0,0,0.4);
       min-height: 100vh;
       padding: 40px 20px;
       text-align: center;
+      color: white;
     }
 
     h1 {
+      font-family: 'Dancing Script', cursive;
       font-size: 60px;
       margin-bottom: 20px;
       text-shadow: 0 0 20px #fff, 0 0 30px #ff69b4;
     }
 
     .counters {
+      font-family: 'Great Vibes', cursive;
       font-size: 28px;
       margin: 30px 0;
-      text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4;
+      text-shadow: 0 0 15px #fff, 0 0 30px #ff69b4;
     }
 
+    /* Slideshow */
     .slideshow {
       max-width: 400px;
       margin: 30px auto;
@@ -53,29 +52,51 @@
       width: 100%;
       border-radius: 20px;
       box-shadow: 0 0 20px #fff, 0 0 40px #ff69b4;
+      transition: transform 1s ease-in-out, opacity 1s ease-in-out;
     }
 
-    .heart {
+    .slides.active {
+      display: block;
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    /* Floating hearts from counters */
+    .burst-heart {
+      position: absolute;
+      font-size: 24px;
+      animation: flyUp 2s forwards;
+      text-shadow: 0 0 5px #fff, 0 0 15px #ff69b4;
+    }
+
+    @keyframes flyUp {
+      0% { transform: translateY(0) scale(1); opacity:1; }
+      100% { transform: translateY(-150px) scale(1.5); opacity:0; }
+    }
+
+    /* Floating background hearts */
+    .floating-heart {
+      position: fixed;
+      font-size: 15px;
+      animation: fall 8s linear infinite;
+      text-shadow: 0 0 5px #fff, 0 0 15px #ff69b4;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity:0.8; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity:0; }
+    }
+
+    .heart-main {
       font-size: 70px;
       animation: pulse 1.5s infinite;
-      text-shadow: 0 0 10px #fff, 0 0 20px #ff69b4;
+      text-shadow: 0 0 15px #fff, 0 0 40px #ff69b4;
     }
 
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.3); }
       100% { transform: scale(1); }
-    }
-
-    @keyframes fall {
-      to { transform: translateY(100vh); opacity: 0; }
-    }
-
-    .floating-heart {
-      position: fixed;
-      font-size: 25px;
-      animation: fall 6s linear;
-      text-shadow: 0 0 5px #fff, 0 0 10px #ff69b4;
     }
 
   </style>
@@ -87,19 +108,19 @@
 
   <h1>Happy Valentine's Day My Love ❤️</h1>
 
-  <div class="heart">💖</div>
+  <div class="heart-main">💖</div>
 
   <div class="counters">
-    Since we started dating: <br>
+    Since we started dating:<br>
     <span id="datingCounter">Loading...</span>  
     <br><br>
-    Since we got married: <br>
+    Since we got married:<br>
     <span id="marriedCounter">Loading...</span>
   </div>
 
   <!-- Slideshow -->
   <div class="slideshow">
-    <img class="slides" src="photo1.jpg">
+    <img class="slides active" src="photo1.jpg">
     <img class="slides" src="photo2.jpg">
     <img class="slides" src="photo3.jpg">
   </div>
@@ -114,60 +135,74 @@
 <script>
 /* Slideshow */
 let slideIndex = 0;
-showSlides();
-function showSlides() {
-  let slides = document.getElementsByClassName("slides");
-  for (let i=0; i<slides.length; i++){ slides[i].style.display="none"; }
+const slides = document.getElementsByClassName("slides");
+function showSlides(){
+  for(let i=0;i<slides.length;i++){ slides[i].classList.remove("active"); slides[i].style.opacity=0; }
   slideIndex++;
   if(slideIndex>slides.length){slideIndex=1;}
-  slides[slideIndex-1].style.display="block";
-  setTimeout(showSlides, 4000); // 4s per slide
+  slides[slideIndex-1].classList.add("active");
+  setTimeout(showSlides,4000);
 }
+showSlides();
 
-/* Floating hearts */
-function createHeart(){
+/* Floating background hearts */
+function createFloatingHeart(){
   const heart=document.createElement("div");
   heart.innerHTML="❤️";
   heart.className="floating-heart";
   heart.style.left=Math.random()*window.innerWidth+"px";
+  heart.style.fontSize=(10+Math.random()*15)+"px";
   document.body.appendChild(heart);
-  setTimeout(()=>heart.remove(),6000);
+  setTimeout(()=>heart.remove(),8000);
 }
-setInterval(createHeart, 300);
+setInterval(createFloatingHeart, 300);
 
-/* Live counters with days, hours, minutes, seconds */
+/* Live counters with burst hearts */
 function updateCounters(){
-  const now = new Date();
+  const now=new Date();
 
   // Dating
-  const datingStart = new Date("2024-10-03T00:00:00");
-  let diff = now - datingStart;
-  const days = Math.floor(diff / (1000*60*60*24));
-  diff -= days*1000*60*60*24;
-  const hours = Math.floor(diff / (1000*60*60));
-  diff -= hours*1000*60*60;
-  const minutes = Math.floor(diff / (1000*60));
-  diff -= minutes*1000*60;
-  const seconds = Math.floor(diff / 1000);
-  document.getElementById("datingCounter").innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  const datingStart=new Date("2024-10-03T00:00:00");
+  let diff=now-datingStart;
+  const days=Math.floor(diff/(1000*60*60*24)); diff-=days*1000*60*60*24;
+  const hours=Math.floor(diff/(1000*60*60)); diff-=hours*1000*60*60;
+  const minutes=Math.floor(diff/(1000*60)); diff-=minutes*1000*60;
+  const seconds=Math.floor(diff/1000);
+  document.getElementById("datingCounter").innerText=`${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+  // Burst heart for dating
+  createBurstHeart(document.getElementById("datingCounter"));
 
   // Married
-  const marriedStart = new Date("2025-10-30T00:00:00");
-  let diffM = now - marriedStart;
+  const marriedStart=new Date("2025-10-30T00:00:00");
+  let diffM=now-marriedStart;
   if(diffM<0) diffM=0;
-  const daysM = Math.floor(diffM / (1000*60*60*24));
-  diffM -= daysM*1000*60*60*24;
-  const hoursM = Math.floor(diffM / (1000*60*60));
-  diffM -= hoursM*1000*60*60;
-  const minutesM = Math.floor(diffM / (1000*60));
-  diffM -= minutesM*1000*60;
-  const secondsM = Math.floor(diffM / 1000);
-  document.getElementById("marriedCounter").innerText = `${daysM}d ${hoursM}h ${minutesM}m ${secondsM}s`;
+  const daysM=Math.floor(diffM/(1000*60*60*24)); diffM-=daysM*1000*60*60*24;
+  const hoursM=Math.floor(diffM/(1000*60*60)); diffM-=hoursM*1000*60*60;
+  const minutesM=Math.floor(diffM/(1000*60)); diffM-=minutesM*1000*60;
+  const secondsM=Math.floor(diffM/1000);
+  document.getElementById("marriedCounter").innerText=`${daysM}d ${hoursM}h ${minutesM}m ${secondsM}s`;
+
+  // Burst heart for married
+  createBurstHeart(document.getElementById("marriedCounter"));
 }
 
-// Update every second
+/* Burst heart function */
+function createBurstHeart(element){
+  const heart=document.createElement("div");
+  heart.innerHTML="❤️";
+  heart.className="burst-heart";
+  const rect=element.getBoundingClientRect();
+  heart.style.left=(rect.left + rect.width/2 + (Math.random()*40-20))+"px";
+  heart.style.top=(rect.top + rect.height/2 + (Math.random()*20-10))+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),2000);
+}
+
+// Update counters every second
 updateCounters();
-setInterval(updateCounters, 1000);
+setInterval(updateCounters,1000);
+
 </script>
 
 </body>
