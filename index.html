@@ -2,22 +2,52 @@
 <html>
 <head>
   <title>Happy Valentine's Day ❤️</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+
   <style>
     body {
-      background: linear-gradient(to right, #ff9a9e, #fad0c4);
-      font-family: Arial, sans-serif;
+      margin: 0;
+      font-family: 'Dancing Script', cursive;
       text-align: center;
       color: white;
-      padding: 40px;
+      overflow-x: hidden;
+      background: url("background.jpg") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.5);
+      min-height: 100vh;
+      padding: 40px 20px;
     }
 
     h1 {
       font-size: 50px;
+      margin-top: 20px;
+    }
+
+    .days {
+      font-size: 26px;
+      margin: 20px 0;
+    }
+
+    .slideshow {
+      max-width: 350px;
+      margin: 20px auto;
+      position: relative;
+    }
+
+    .slides {
+      display: none;
+      width: 100%;
+      border-radius: 20px;
     }
 
     .heart {
-      font-size: 100px;
-      animation: pulse 1s infinite;
+      font-size: 60px;
+      animation: pulse 1.5s infinite;
     }
 
     @keyframes pulse {
@@ -26,47 +56,95 @@
       100% { transform: scale(1); }
     }
 
-    .letter {
-      margin-top: 40px;
-      font-size: 20px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
     }
 
-    button {
-      background: white;
-      color: #ff4d6d;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 30px;
-      font-size: 18px;
-      margin-top: 30px;
+    .floating-heart {
+      position: fixed;
+      font-size: 20px;
+      animation: fall 5s linear;
     }
   </style>
 </head>
 
 <body>
 
+<div class="overlay">
+
   <h1>Happy Valentine's Day My Love ❤️</h1>
 
   <div class="heart">💖</div>
 
-  <div class="letter">
-    <p>
-      My beautiful wife,
-    </p>
-    <p>
-      Every day with you feels like a blessing. You are my best friend, my soulmate, and my forever Valentine.
-    </p>
-    <p>
-      I love you more than words can ever explain.
-    </p>
+  <div class="days">
+    Days since we started dating: <strong id="datingDays"></strong> ❤️ <br>
+    Days since we got married: <strong id="marriedDays"></strong> 💍
   </div>
 
-  <button onclick="alert('I love you forever ❤️')">
-    Click Me
-  </button>
+  <!-- Slideshow -->
+  <div class="slideshow">
+    <img class="slides" src="photo1.jpg">
+    <img class="slides" src="photo2.jpg">
+    <img class="slides" src="photo3.jpg">
+  </div>
+
+</div>
+
+<!-- Background Music -->
+<audio autoplay loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* Slideshow */
+let slideIndex = 0;
+showSlides();
+function showSlides() {
+  let slides = document.getElementsByClassName("slides");
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) { slideIndex = 1 }
+  slides[slideIndex - 1].style.display = "block";
+  setTimeout(showSlides, 3000);
+}
+
+/* Floating hearts */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.innerHTML = "❤️";
+  heart.className = "floating-heart";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => { heart.remove(); }, 5000);
+}
+setInterval(createHeart, 300);
+
+/* Live date counters */
+function updateCounters() {
+  const now = new Date();
+
+  // Dating
+  const datingStart = new Date("2024-10-03");
+  const datingDiff = now - datingStart;
+  const datingDays = Math.floor(datingDiff / (1000 * 60 * 60 * 24));
+  document.getElementById("datingDays").innerText = datingDays;
+
+  // Married
+  const marriedStart = new Date("2025-10-30");
+  const marriedDiff = now - marriedStart;
+  const marriedDays = marriedDiff >= 0 ? Math.floor(marriedDiff / (1000 * 60 * 60 * 24)) : 0;
+  document.getElementById("marriedDays").innerText = marriedDays;
+}
+
+// Update every second
+updateCounters();
+setInterval(updateCounters, 1000);
+</script>
 
 </body>
 </html>
