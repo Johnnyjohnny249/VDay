@@ -29,7 +29,7 @@ body {
 .bg {
     position:fixed;
     inset:0;
-    background-image:url("background.GIF");
+    background-image:url("background.gif");
     background-position:center;
     background-size:cover;
     background-repeat:no-repeat;
@@ -84,14 +84,14 @@ button {
     box-shadow:0 0 15px #fff;
 }
 
-/* No button */
+/* NO button - starts below YES button */
 #noBtn {
     background:rgba(255,255,255,0.15);
     color:white;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
+    position: static; /* normal flow below YES */
+    transform: none;  /* remove centering */
+    top: auto;
+    left: auto;
 }
 
 /* Start button */
@@ -173,7 +173,14 @@ startBtn.addEventListener("click", () => {
 
 // No button dodges randomly on click
 const noBtn = document.getElementById("noBtn");
+let activated = false;
+
 noBtn.addEventListener("click", () => {
+    if(!activated){
+        noBtn.style.position = "absolute"; // now it can move freely
+        activated = true;
+    }
+
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
 
@@ -183,8 +190,8 @@ noBtn.addEventListener("click", () => {
     const randomX = Math.random() * maxX;
     const randomY = Math.random() * maxY;
 
-    noBtn.style.top = randomY + "px";
     noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
 });
 </script>
 
