@@ -6,13 +6,13 @@
 <title>For My Queen ❤️</title>
 
 <style>
-*{
+* {
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
-body{
+body {
     height:100vh;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
                  Roboto,Helvetica,Arial,sans-serif;
@@ -25,77 +25,77 @@ body{
     background:black;
 }
 
-/* FULLSCREEN GIF BACKGROUND */
-#bgGif{
+/* Background GIF */
+.bg {
     position:fixed;
-    top:0;
-    left:0;
-    width:100vw;
-    height:100vh;
-    object-fit:cover;
+    inset:0;
+    background-image:url("background.GIF");
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
     z-index:-2;
 }
 
 /* Dark overlay */
-.overlay{
+.overlay {
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.4);
+    background:rgba(0,0,0,0.45);
     z-index:-1;
 }
 
-/* Main container (hidden first) */
-.container{
+/* Main container (hidden initially) */
+.container {
     max-width:900px;
     padding:40px;
-    display:none;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+    position:relative;
+    display:none; /* hidden until start */
 }
 
-/* Heading */
-h1{
+h1 {
     font-size:clamp(32px,5vw,60px);
-    margin-bottom:40px;
+    font-weight:600;
+    margin-bottom:10px;
 }
 
-/* Button stack */
-.buttons{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+h2 {
+    font-size:clamp(20px,3vw,28px);
+    font-weight:400;
+    margin-bottom:50px;
 }
 
-/* Buttons */
-button{
+button {
     padding:16px 30px;
     border:none;
     border-radius:50px;
     font-size:17px;
     cursor:pointer;
     margin:12px;
-    transition:.25s, top .3s ease, left .3s ease;
+    transition:0.25s, top 0.3s ease, left 0.3s ease;
 }
 
-/* YES button */
-#yesBtn{
+/* Yes button */
+#yesBtn {
     background:white;
     color:black;
 }
-#yesBtn:hover{
+#yesBtn:hover {
     transform:scale(1.1);
     box-shadow:0 0 15px #fff;
 }
 
-/* NO button */
-#noBtn{
+/* No button */
+#noBtn {
     background:rgba(255,255,255,0.15);
     color:white;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
 }
 
 /* Start button */
-#startBtn{
+#startBtn {
     position:absolute;
     top:50%;
     left:50%;
@@ -110,93 +110,82 @@ button{
     box-shadow:0 0 20px #fff;
 }
 
-@media(max-width:600px){
-    .container{padding:20px;}
-    #startBtn{font-size:16px;padding:16px 24px;}
+@media(max-width:600px) {
+    .container { padding:20px; }
+    #startBtn { font-size:16px; padding:16px 24px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- GIF Background -->
-<img src="background.GIF" id="bgGif" alt="background">
-
-<div class="overlay"></div>
-
-<!-- Music -->
+<!-- Background Music -->
 <audio id="bgMusic" loop>
     <source src="song.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Start Intro Button -->
-<button id="startBtn">
-Please click me for full intro experience 🎵
-</button>
+<div class="bg"></div>
+<div class="overlay"></div>
 
-<!-- Main Content -->
+<!-- Start button -->
+<button id="startBtn">Please click me for full intro experience 🎵</button>
+
+<!-- Main content -->
 <div class="container" id="mainContainer">
+    <h1>Hello my sayang manja…</h1>
+    <h2>R U READYYYYY?!</h2>
 
-    <h1>Hello my sayang cantik…</h1>
+    <button id="yesBtn" onclick="window.location.href='page2.html'">
+        Yes, my buntis & I are ready 😎❤️
+    </button>
 
-    <div class="buttons">
-        <button id="yesBtn"
-            onclick="window.location.href='page2.html'">
-            Yes, my buntis & I are ready 😎❤️
-        </button>
-
-        <button id="noBtn">
-            No 👎🏽👎🏽🍅🍅
-        </button>
-    </div>
-
+    <button id="noBtn">No 👎🏽👎🏽🍅🍅</button>
 </div>
 
 <script>
-// Start intro
-const startBtn=document.getElementById("startBtn");
-const mainContainer=document.getElementById("mainContainer");
-const music=document.getElementById("bgMusic");
+// Start button functionality
+const startBtn = document.getElementById("startBtn");
+const mainContainer = document.getElementById("mainContainer");
+const music = document.getElementById("bgMusic");
 
-startBtn.onclick=()=>{
-
-    music.volume=0.01;
-
-    music.play().then(()=>{
-        let v=0.01;
-        const fade=setInterval(()=>{
-            if(v<0.2){
-                v+=0.01;
-                music.volume=v;
-            } else clearInterval(fade);
-        },100);
-    }).catch(()=>{});
-
-    mainContainer.style.display="flex";
-    startBtn.style.display="none";
-};
-
-// No button dodge
-const noBtn=document.getElementById("noBtn");
-let activated=false;
-
-noBtn.onclick=()=>{
-
-    if(!activated){
-        noBtn.style.position="absolute";
-        activated=true;
+startBtn.addEventListener("click", () => {
+    // Play music with fade-in
+    music.volume = 0.01;
+    const playPromise = music.play();
+    if(playPromise !== undefined) {
+        playPromise.then(() => {
+            let vol = 0.01;
+            const fadeIn = setInterval(() => {
+                if(vol < 0.2){
+                    vol += 0.01;
+                    music.volume = vol;
+                } else {
+                    clearInterval(fadeIn);
+                }
+            },100);
+        }).catch(() => console.log("Autoplay blocked"));
     }
 
-    const pad=20;
-    const maxX=window.innerWidth-noBtn.offsetWidth-pad;
-    const maxY=window.innerHeight-noBtn.offsetHeight-pad;
+    // Show main container and hide start button
+    mainContainer.style.display = "block";
+    startBtn.style.display = "none";
+});
 
-    const x=Math.random()*maxX;
-    const y=Math.random()*maxY;
+// No button dodges randomly on click
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("click", () => {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
 
-    noBtn.style.left=x+"px";
-    noBtn.style.top=y+"px";
-};
+    const maxX = window.innerWidth - btnWidth - 20;
+    const maxY = window.innerHeight - btnHeight - 20;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.top = randomY + "px";
+    noBtn.style.left = randomX + "px";
+});
 </script>
 
 </body>
