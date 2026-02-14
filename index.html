@@ -29,11 +29,14 @@ body{
 .bg{
     position:fixed;
     inset:0;
-    background:url("background.GIF") center/cover no-repeat;
+    background-image:url("background.GIF");
+    background-position:center;
+    background-size:cover;
+    background-repeat:no-repeat;
     z-index:-2;
 }
 
-/* Overlay for readability */
+/* Dark overlay for readability */
 .overlay{
     position:fixed;
     inset:0;
@@ -66,24 +69,30 @@ button{
     font-size:17px;
     cursor:pointer;
     margin:12px;
-    transition:0.25s;
+    transition:0.25s, top 0.3s ease, left 0.3s ease;
 }
 
+/* YES button */
 #yesBtn{
     background:white;
     color:black;
 }
 
 #yesBtn:hover{
-    transform:scale(1.08);
+    transform:scale(1.1);
+    box-shadow:0 0 15px #fff;
 }
 
-/* Start normal position */
+/* NO button initial position */
 #noBtn{
     background:rgba(255,255,255,0.15);
     color:white;
     display:block;
     margin:10px auto 0;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
 }
 
 @media (max-width:600px){
@@ -96,11 +105,16 @@ button{
 
 <body>
 
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
 <div class="bg"></div>
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>Hello my beautiful Queen…</h1>
+    <h1>Hello my sayang cantik…</h1>
     <h2>R U READYYYYY?!</h2>
 
     <button id="yesBtn" onclick="window.location.href='page2.html'">
@@ -113,28 +127,46 @@ button{
 </div>
 
 <script>
+// Autoplay background music with fade-in
+window.addEventListener("load", () => {
+    const music = document.getElementById("bgMusic");
+    music.volume = 0.01;
+    const playPromise = music.play();
+
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => {
+                let vol = 0.01;
+                const fadeIn = setInterval(() => {
+                    if (vol < 0.2) {
+                        vol += 0.01;
+                        music.volume = vol;
+                    } else {
+                        clearInterval(fadeIn);
+                    }
+                }, 100);
+            })
+            .catch(() => {
+                console.log("Autoplay blocked. Will play on first interaction.");
+            });
+    }
+});
+
+// Dodging NO button randomly **on click**
 const noBtn = document.getElementById("noBtn");
 
-const positions=[
- {top:"18%",left:"15%"},
- {top:"70%",left:"12%"},
- {top:"45%",left:"78%"},
- {top:"80%",left:"70%"},
- {top:"25%",left:"60%"}
-];
+noBtn.addEventListener("click", () => {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
 
-let i=0;
-let activated=false;
+    const maxX = window.innerWidth - btnWidth - 20; // 20px margin
+    const maxY = window.innerHeight - btnHeight - 20;
 
-noBtn.addEventListener("click",()=>{
-    if(!activated){
-        noBtn.style.position="absolute";
-        activated=true;
-    }
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
 
-    noBtn.style.top=positions[i].top;
-    noBtn.style.left=positions[i].left;
-    i=(i+1)%positions.length;
+    noBtn.style.top = randomY + "px";
+    noBtn.style.left = randomX + "px";
 });
 </script>
 
