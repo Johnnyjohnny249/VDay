@@ -22,13 +22,14 @@ body{
     text-align:center;
     color:white;
     overflow:hidden;
+    background:black;
 }
 
 /* Background GIF */
 .bg{
     position:fixed;
     inset:0;
-    background:url("background.gif") center/cover no-repeat;
+    background:url("yourgif.gif") center/cover no-repeat;
     z-index:-2;
 }
 
@@ -43,6 +44,7 @@ body{
 .container{
     max-width:900px;
     padding:40px;
+    position:relative;
 }
 
 h1{
@@ -65,7 +67,6 @@ button{
     cursor:pointer;
     margin:12px;
     transition:0.25s;
-    backdrop-filter: blur(8px);
 }
 
 #yesBtn{
@@ -77,13 +78,14 @@ button{
     transform:scale(1.08);
 }
 
+/* Start normal position */
 #noBtn{
     background:rgba(255,255,255,0.15);
     color:white;
-    position:absolute;
+    display:block;
+    margin:10px auto 0;
 }
 
-/* Mobile adjustments */
 @media (max-width:600px){
     .container{
         padding:20px;
@@ -98,7 +100,7 @@ button{
 <div class="overlay"></div>
 
 <div class="container">
-    <h1>Hello my Sayang Cantik…</h1>
+    <h1>Hello my beautiful Queen…</h1>
     <h2>R U READYYYYY?!</h2>
 
     <button id="yesBtn" onclick="window.location.href='page2.html'">
@@ -113,7 +115,7 @@ button{
 <script>
 const noBtn = document.getElementById("noBtn");
 
-const positions = [
+const positions=[
  {top:"18%",left:"15%"},
  {top:"70%",left:"12%"},
  {top:"45%",left:"78%"},
@@ -121,12 +123,18 @@ const positions = [
  {top:"25%",left:"60%"}
 ];
 
-let i = 0;
+let i=0;
+let activated=false;
 
-noBtn.addEventListener("click", () => {
-    noBtn.style.top = positions[i].top;
-    noBtn.style.left = positions[i].left;
-    i = (i + 1) % positions.length;
+noBtn.addEventListener("click",()=>{
+    if(!activated){
+        noBtn.style.position="absolute";
+        activated=true;
+    }
+
+    noBtn.style.top=positions[i].top;
+    noBtn.style.left=positions[i].left;
+    i=(i+1)%positions.length;
 });
 </script>
 
