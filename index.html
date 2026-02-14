@@ -25,14 +25,14 @@ body{
     background:black;
 }
 
-/* Background GIF */
-.bg {
+/* FULLSCREEN GIF BACKGROUND */
+#bgGif{
     position:fixed;
-    inset:0;
-    background-image:url("background.GIF");
-    background-position:center;
-    background-size:cover;
-    background-repeat:no-repeat;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    object-fit:cover;
     z-index:-2;
 }
 
@@ -40,25 +40,23 @@ body{
 .overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.45);
+    background:rgba(0,0,0,0.4);
     z-index:-1;
 }
 
-/* Main container hidden initially */
+/* Main container (hidden first) */
 .container{
     max-width:900px;
     padding:40px;
-    position:relative;
     display:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 }
 
+/* Heading */
 h1{
     font-size:clamp(32px,5vw,60px);
-    margin-bottom:10px;
-}
-
-h2{
-    font-size:clamp(20px,3vw,28px);
     margin-bottom:40px;
 }
 
@@ -80,7 +78,7 @@ button{
     transition:.25s, top .3s ease, left .3s ease;
 }
 
-/* Yes button */
+/* YES button */
 #yesBtn{
     background:white;
     color:black;
@@ -90,7 +88,7 @@ button{
     box-shadow:0 0 15px #fff;
 }
 
-/* No button normal start */
+/* NO button */
 #noBtn{
     background:rgba(255,255,255,0.15);
     color:white;
@@ -121,7 +119,7 @@ button{
 
 <body>
 
-<!-- GIF background -->
+<!-- GIF Background -->
 <img src="background.GIF" id="bgGif" alt="background">
 
 <div class="overlay"></div>
@@ -131,13 +129,15 @@ button{
     <source src="song.mp3" type="audio/mpeg">
 </audio>
 
+<!-- Start Intro Button -->
 <button id="startBtn">
 Please click me for full intro experience 🎵
 </button>
 
+<!-- Main Content -->
 <div class="container" id="mainContainer">
-    <h1>Hello my beautiful Queen…</h1>
-    <h2>R U READYYYYY?!</h2>
+
+    <h1>Hello my sayang cantik…</h1>
 
     <div class="buttons">
         <button id="yesBtn"
@@ -149,6 +149,7 @@ Please click me for full intro experience 🎵
             No 👎🏽👎🏽🍅🍅
         </button>
     </div>
+
 </div>
 
 <script>
@@ -171,7 +172,7 @@ startBtn.onclick=()=>{
         },100);
     }).catch(()=>{});
 
-    mainContainer.style.display="block";
+    mainContainer.style.display="flex";
     startBtn.style.display="none";
 };
 
