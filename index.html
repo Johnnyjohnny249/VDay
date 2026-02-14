@@ -29,7 +29,7 @@ body {
 .bg {
     position:fixed;
     inset:0;
-    background-image:url("background.GIF");
+    background-image:url("background.gif");
     background-position:center;
     background-size:cover;
     background-repeat:no-repeat;
@@ -44,12 +44,12 @@ body {
     z-index:-1;
 }
 
-/* Main container (hidden initially) */
+/* Main container hidden initially */
 .container {
     max-width:900px;
     padding:40px;
     position:relative;
-    display:none; /* hidden until start */
+    display:none;
 }
 
 h1 {
@@ -61,9 +61,17 @@ h1 {
 h2 {
     font-size:clamp(20px,3vw,28px);
     font-weight:400;
-    margin-bottom:50px;
+    margin-bottom:40px;
 }
 
+/* Button stack */
+.buttons {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* Buttons */
 button {
     padding:16px 30px;
     border:none;
@@ -84,14 +92,10 @@ button {
     box-shadow:0 0 15px #fff;
 }
 
-/* No button */
+/* No button initial NORMAL position */
 #noBtn {
     background:rgba(255,255,255,0.15);
     color:white;
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
 }
 
 /* Start button */
@@ -119,7 +123,6 @@ button {
 
 <body>
 
-<!-- Background Music -->
 <audio id="bgMusic" loop>
     <source src="song.mp3" type="audio/mpeg">
 </audio>
@@ -127,30 +130,30 @@ button {
 <div class="bg"></div>
 <div class="overlay"></div>
 
-<!-- Start button -->
 <button id="startBtn">Please click me for full intro experience 🎵</button>
 
-<!-- Main content -->
 <div class="container" id="mainContainer">
-    <h1>Hello my Sayang Cantik…</h1>
+    <h1>Hello my beautiful Queen…</h1>
     <h2>R U READYYYYY?!</h2>
 
-    <button id="yesBtn" onclick="window.location.href='page2.html'">
-        Yes, my buntis & I are ready 😎❤️
-    </button>
+    <div class="buttons">
+        <button id="yesBtn" onclick="window.location.href='page2.html'">
+            Yes, my buntis & I are ready 😎❤️
+        </button>
 
-    <button id="noBtn">No 👎🏽👎🏽🍅🍅</button>
+        <button id="noBtn">No 👎🏽👎🏽🍅🍅</button>
+    </div>
 </div>
 
 <script>
-// Start button functionality
+// Start button
 const startBtn = document.getElementById("startBtn");
 const mainContainer = document.getElementById("mainContainer");
 const music = document.getElementById("bgMusic");
 
 startBtn.addEventListener("click", () => {
-    // Play music with fade-in
     music.volume = 0.01;
+
     const playPromise = music.play();
     if(playPromise !== undefined) {
         playPromise.then(() => {
@@ -159,32 +162,35 @@ startBtn.addEventListener("click", () => {
                 if(vol < 0.2){
                     vol += 0.01;
                     music.volume = vol;
-                } else {
-                    clearInterval(fadeIn);
-                }
+                } else clearInterval(fadeIn);
             },100);
-        }).catch(() => console.log("Autoplay blocked"));
+        });
     }
 
-    // Show main container and hide start button
     mainContainer.style.display = "block";
     startBtn.style.display = "none";
 });
 
-// No button dodges randomly on click
+// No button dodge logic
 const noBtn = document.getElementById("noBtn");
+let activated = false;
+
 noBtn.addEventListener("click", () => {
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
 
-    const maxX = window.innerWidth - btnWidth - 20;
-    const maxY = window.innerHeight - btnHeight - 20;
+    if(!activated){
+        noBtn.style.position = "absolute";
+        activated = true;
+    }
 
-    const randomX = Math.random() * maxX;
-    const randomY = Math.random() * maxY;
+    const padding = 20;
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-    noBtn.style.top = randomY + "px";
-    noBtn.style.left = randomX + "px";
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 });
 </script>
 
