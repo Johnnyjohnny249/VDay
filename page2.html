@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Queen - Flowers ❤️</title>
+<title>For My Queen - Petal Shower ❤️</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -19,13 +19,12 @@ body {
     background:black;
 }
 
-/* Background GIF or color */
 .bg {
     position:fixed;
     inset:0;
-    background-image:url("background2.gif"); /* optional */
-    background-position:center;
+    background-image:url("background2.gif");
     background-size:cover;
+    background-position:center;
     background-repeat:no-repeat;
     z-index:-2;
 }
@@ -47,7 +46,6 @@ body {
     justify-content:center;
 }
 
-/* Texts */
 h1 {
     font-size:clamp(28px,4vw,50px);
     margin-bottom:20px;
@@ -62,7 +60,6 @@ h1 {
     transition:opacity 1s;
 }
 
-/* Next button */
 #nextBtn {
     margin-top:30px;
     padding:16px 30px;
@@ -81,18 +78,29 @@ h1 {
     box-shadow:0 0 15px #fff;
 }
 
-/* Flower emoji style */
+/* Flower animation */
 .flower {
     position:absolute;
-    font-size:30px;
+    width:20px;
+    height:20px;
+    pointer-events:none;
+    border-radius:50%;
     opacity:0;
-    animation:floatUp 4s forwards;
+    animation-name:fallDrift;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
 }
 
-/* Flower float animation */
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity:1; }
-    100% { transform: translateY(-200px) scale(1.2); opacity:0; }
+/* Keyframes for drifting petals */
+@keyframes fallDrift {
+    0% {
+        transform: translate(0, -50px) rotate(0deg);
+        opacity:1;
+    }
+    100% {
+        transform: translate(var(--x-drift, 50px), 100vh) rotate(var(--rotation, 360deg));
+        opacity:0;
+    }
 }
 </style>
 </head>
@@ -102,8 +110,8 @@ h1 {
 <div class="overlay"></div>
 
 <div class="container">
-    <h1 id="firstText">Sayang, before we start… here's some flowers for you 🌸</h1>
-    <h1 id="secondText">Actually… here's more flowers for you! 🌺🌹💐</h1>
+    <h1 id="firstText">Sayang, before we start… here's some flowers for you.</h1>
+    <h1 id="secondText">Actually… here's more flowers for you!</h1>
     <button id="nextBtn" onclick="window.location.href='page3.html'">Next</button>
 </div>
 
@@ -112,32 +120,48 @@ const firstText = document.getElementById('firstText');
 const secondText = document.getElementById('secondText');
 const nextBtn = document.getElementById('nextBtn');
 
-// Show first text immediately
-setTimeout(() => { firstText.style.opacity = 1; createFlowers(5); }, 500);
+// Flower colors
+const flowerColors = ['#FF69B4','#FFB6C1','#FFD700','#FF4500','#ADFF2F','#FF1493'];
 
-// After 6 seconds, show second text and lots more flowers
+// Create a single drifting flower
+function createFlower() {
+    const flower = document.createElement('div');
+    flower.className = 'flower';
+    // random color
+    flower.style.backgroundColor = flowerColors[Math.floor(Math.random()*flowerColors.length)];
+    // random size
+    const size = Math.random()*25 + 20; // 20px to 45px
+    flower.style.width = size + 'px';
+    flower.style.height = size + 'px';
+    // random starting horizontal position
+    flower.style.left = Math.random()*90 + 'vw';
+    // starting above view
+    flower.style.top = Math.random()*-20 + 'vh';
+    // random animation duration
+    const duration = Math.random()*3 + 5; // 5s to 8s
+    flower.style.animationDuration = duration + 's';
+    // random horizontal drift
+    flower.style.setProperty('--x-drift', (Math.random()*200 - 100) + 'px'); // -100px to +100px
+    // random rotation
+    flower.style.setProperty('--rotation', (Math.random()*720 - 360) + 'deg'); // -360 to +360 deg
+    document.body.appendChild(flower);
+    // remove after animation
+    setTimeout(() => flower.remove(), duration*1000);
+}
+
+// First text + small burst
+setTimeout(() => {
+    firstText.style.opacity = 1;
+    for(let i=0;i<15;i++) createFlower();
+},500);
+
+// Second text + huge burst
 setTimeout(() => {
     secondText.style.opacity = 1;
-    createFlowers(30);
+    for(let i=0;i<120;i++) createFlower();
     nextBtn.style.opacity = 1;
-}, 6000);
+},6000);
 
-// Function to create floating flowers randomly
-function createFlowers(count) {
-    for(let i=0;i<count;i++){
-        const flower = document.createElement('div');
-        flower.className='flower';
-        // Random flower emoji
-        const emojis = ['🌸','🌹','💐','🌺','🥀'];
-        flower.innerText = emojis[Math.floor(Math.random()*emojis.length)];
-        // Random start position
-        flower.style.left = Math.random()*90 + 'vw';
-        flower.style.top = Math.random()*70 + 'vh';
-        document.body.appendChild(flower);
-        // Remove flower after animation
-        setTimeout(() => flower.remove(), 4000);
-    }
-}
 </script>
 
 </body>
