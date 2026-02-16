@@ -3,165 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For My Queen - Petal Shower ❤️</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
+<title>Flowers For You 🌸</title>
 
-body {
-    height:100vh;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI", Roboto,Helvetica,Arial,sans-serif;
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+                 Roboto,Helvetica,Arial,sans-serif;
+    background:black;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* Scrollable UHD container */
+.section{
+    min-height:100vh;
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
     text-align:center;
-    color:white;
-    overflow:hidden;
-    background:black;
+    padding:40px 20px;
 }
 
-.bg {
-    position:fixed;
-    inset:0;
-    background-image:url("background2.gif");
-    background-size:cover;
-    background-position:center;
-    background-repeat:no-repeat;
-    z-index:-2;
-}
-
-.overlay {
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    z-index:-1;
-}
-
-.container {
-    position:relative;
-    z-index:5;
-    max-width:900px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-}
-
-h1 {
-    font-size:clamp(28px,4vw,50px);
+/* Text styling */
+h1{
+    font-size:clamp(32px,5vw,60px);
     margin-bottom:20px;
-    opacity:0;
-    transition:opacity 1s;
 }
 
-#secondText {
-    font-size:clamp(24px,3vw,40px);
-    margin-top:20px;
+h2{
+    font-size:clamp(20px,3vw,28px);
     opacity:0;
-    transition:opacity 1s;
+    transition:opacity 1.5s;
 }
 
-#nextBtn {
-    margin-top:30px;
-    padding:16px 30px;
+/* Flower animation */
+.flower{
+    position:fixed;
+    width:14px;
+    height:14px;
+    background:white;
+    border-radius:50%;
+    pointer-events:none;
+    opacity:.85;
+    animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(100vh) scale(0.5);
+        opacity:0;
+    }
+    to{
+        transform:translateY(-10vh) scale(1.2);
+        opacity:1;
+    }
+}
+
+/* Continue button */
+#nextBtn{
+    margin-top:60px;
+    padding:18px 36px;
     border:none;
     border-radius:50px;
     font-size:18px;
     cursor:pointer;
     background:white;
     color:black;
-    opacity:0;
-    transition:opacity 0.5s;
+    display:none;
 }
 
-#nextBtn:hover {
+#nextBtn:hover{
     transform:scale(1.1);
-    box-shadow:0 0 15px #fff;
 }
 
-/* Flower animation */
-.flower {
-    position:absolute;
-    width:20px;
-    height:20px;
-    pointer-events:none;
-    border-radius:50%;
-    opacity:0;
-    animation-name:fallDrift;
-    animation-timing-function: linear;
-    animation-fill-mode: forwards;
-}
-
-/* Keyframes for drifting petals */
-@keyframes fallDrift {
-    0% {
-        transform: translate(0, -50px) rotate(0deg);
-        opacity:1;
-    }
-    100% {
-        transform: translate(var(--x-drift, 50px), 100vh) rotate(var(--rotation, 360deg));
-        opacity:0;
-    }
+/* Mobile polish */
+@media(max-width:600px){
+    h1{font-size:32px;}
+    h2{font-size:20px;}
 }
 </style>
 </head>
+
 <body>
 
-<div class="bg"></div>
-<div class="overlay"></div>
+<!-- Background music -->
+<audio id="bgMusic" autoplay loop>
+    <source src="song2.mp3" type="audio/mpeg">
+</audio>
 
-<div class="container">
-    <h1 id="firstText">Sayang, before we start… here's some flowers for you.</h1>
-    <h1 id="secondText">Actually… here's more flowers for you!</h1>
-    <button id="nextBtn" onclick="window.location.href='page3.html'">Next</button>
+<div class="section">
+    <h1>Sayang, before we start…<br>here’s some flowers for you 🌸</h1>
+    <h2 id="secondText">
+        Actually… here’s MORE flowers for you ❤️
+    </h2>
+
+    <button id="nextBtn"
+        onclick="window.location.href='page3.html'">
+        Continue ❤️
+    </button>
 </div>
 
 <script>
-const firstText = document.getElementById('firstText');
-const secondText = document.getElementById('secondText');
-const nextBtn = document.getElementById('nextBtn');
+const music=document.getElementById("bgMusic");
 
-// Flower colors
-const flowerColors = ['#FF69B4','#FFB6C1','#FFD700','#FF4500','#ADFF2F','#FF1493'];
+/* iPhone Safari fallback autoplay */
+music.play().catch(()=>{
+    document.body.addEventListener("click",()=>{
+        music.play();
+    },{once:true});
+});
 
-// Create a single drifting flower
-function createFlower() {
-    const flower = document.createElement('div');
-    flower.className = 'flower';
-    // random color
-    flower.style.backgroundColor = flowerColors[Math.floor(Math.random()*flowerColors.length)];
-    // random size
-    const size = Math.random()*25 + 20; // 20px to 45px
-    flower.style.width = size + 'px';
-    flower.style.height = size + 'px';
-    // random starting horizontal position
-    flower.style.left = Math.random()*90 + 'vw';
-    // starting above view
-    flower.style.top = Math.random()*-20 + 'vh';
-    // random animation duration
-    const duration = Math.random()*3 + 5; // 5s to 8s
-    flower.style.animationDuration = duration + 's';
-    // random horizontal drift
-    flower.style.setProperty('--x-drift', (Math.random()*200 - 100) + 'px'); // -100px to +100px
-    // random rotation
-    flower.style.setProperty('--rotation', (Math.random()*720 - 360) + 'deg'); // -360 to +360 deg
-    document.body.appendChild(flower);
-    // remove after animation
-    setTimeout(() => flower.remove(), duration*1000);
+/* Flower generator */
+function createFlower(){
+    const f=document.createElement("div");
+    f.className="flower";
+
+    f.style.left=Math.random()*100+"vw";
+    f.style.animationDuration=(6+Math.random()*6)+"s";
+
+    document.body.appendChild(f);
+
+    setTimeout(()=>f.remove(),12000);
 }
 
-// First text + small burst
-setTimeout(() => {
-    firstText.style.opacity = 1;
-    for(let i=0;i<15;i++) createFlower();
-},500);
+/* Initial flowers */
+setInterval(createFlower,300);
 
-// Second text + huge burst
-setTimeout(() => {
-    secondText.style.opacity = 1;
-    for(let i=0;i<120;i++) createFlower();
-    nextBtn.style.opacity = 1;
-},6000);
+/* After 7s → MANY flowers + new text */
+setTimeout(()=>{
+    document.getElementById("secondText").style.opacity=1;
 
+    setInterval(createFlower,80);
+
+    document.getElementById("nextBtn").style.display="block";
+},7000);
 </script>
 
 </body>
